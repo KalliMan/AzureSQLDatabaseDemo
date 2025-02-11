@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Databases", "Databases", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSQLDatabaseDemo", "AzureSQLDatabaseDemo\AzureSQLDatabaseDemo.csproj", "{EDF29EE0-2EA6-4C79-BF90-0BB8C8ED89ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSQLDatabaseDemo.DAL", "AzureSQLDatabaseDemo.DAL\AzureSQLDatabaseDemo.DAL.csproj", "{9458043F-105C-441C-BD8C-78C080C63CFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +19,16 @@ Global
 		{EDF29EE0-2EA6-4C79-BF90-0BB8C8ED89ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDF29EE0-2EA6-4C79-BF90-0BB8C8ED89ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDF29EE0-2EA6-4C79-BF90-0BB8C8ED89ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9458043F-105C-441C-BD8C-78C080C63CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9458043F-105C-441C-BD8C-78C080C63CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9458043F-105C-441C-BD8C-78C080C63CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9458043F-105C-441C-BD8C-78C080C63CFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EDF29EE0-2EA6-4C79-BF90-0BB8C8ED89ED} = {B594812C-DBDC-4ED5-A095-A4DBD1DB08CF}
+		{9458043F-105C-441C-BD8C-78C080C63CFA} = {B594812C-DBDC-4ED5-A095-A4DBD1DB08CF}
 	EndGlobalSection
 EndGlobal

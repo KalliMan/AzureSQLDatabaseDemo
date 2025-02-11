@@ -1,7 +1,13 @@
+using AzureSQLDatabaseDemo.DAL.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+var cnnString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(cnnString));
 
 var app = builder.Build();
 
