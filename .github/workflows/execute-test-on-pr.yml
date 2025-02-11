@@ -1,0 +1,27 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Build and Execute unit tests on pull request
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up .NET Core  
+      uses: actions/setup-dotnet@v4.3.0
+      with:
+        dotnet-version: '9.0.x'
+              
+    - name: Build
+      run: dotnet build
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
