@@ -1,29 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Products
 {
     public class IndexModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public IndexModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public IndexModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         public IList<Product> Product { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Product = await _context.Products.ToListAsync();
+            Product = await _appDbUnitOfWork.ProductRepository.ToListAsync();
         }
     }
 }

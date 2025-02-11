@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Orders
 {
     public class DetailsModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public DetailsModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public DetailsModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         public Order Order { get; set; } = default!;
@@ -28,7 +23,7 @@ namespace AzureSQLDatabaseDemo.Pages_Orders
                 return NotFound();
             }
 
-            var order = await _context.Orders.FirstOrDefaultAsync(m => m.Id == id);
+            var order = await _appDbUnitOfWork.OrderRepository.FirstOrDefaultAsync(m => m.Id == id);
 
             if (order is not null)
             {

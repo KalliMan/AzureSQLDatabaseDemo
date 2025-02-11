@@ -1,23 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Orders
 {
     public class EditModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public EditModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public EditModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         [BindProperty]
@@ -30,7 +25,7 @@ namespace AzureSQLDatabaseDemo.Pages_Orders
                 return NotFound();
             }
 
-            var order =  await _context.Orders.FirstOrDefaultAsync(m => m.Id == id);
+            var order =  await _appDbUnitOfWork.OrderRepository.FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
                 return NotFound();
@@ -48,11 +43,11 @@ namespace AzureSQLDatabaseDemo.Pages_Orders
                 return Page();
             }
 
-            _context.Attach(Order).State = EntityState.Modified;
+            _appDbUnitOfWork.OrderRepository.Update(Order);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _appDbUnitOfWork.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,7 +66,7 @@ namespace AzureSQLDatabaseDemo.Pages_Orders
 
         private bool OrderExists(int id)
         {
-            return _context.Orders.Any(e => e.Id == id);
+            return _appDbUnitOfWork.OrderRepository.Exists(e => e.Id == id);
         }
     }
 }

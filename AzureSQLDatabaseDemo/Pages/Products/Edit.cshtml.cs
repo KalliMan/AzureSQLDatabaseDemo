@@ -1,23 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Products
 {
     public class EditModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public EditModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public EditModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         [BindProperty]
@@ -30,7 +25,7 @@ namespace AzureSQLDatabaseDemo.Pages_Products
                 return NotFound();
             }
 
-            var product =  await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            var product =  await _appDbUnitOfWork.ProductRepository.FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -48,11 +43,11 @@ namespace AzureSQLDatabaseDemo.Pages_Products
                 return Page();
             }
 
-            _context.Attach(Product).State = EntityState.Modified;
+            _appDbUnitOfWork.ProductRepository.Update(Product);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _appDbUnitOfWork.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,9 +64,7 @@ namespace AzureSQLDatabaseDemo.Pages_Products
             return RedirectToPage("./Index");
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+        private bool ProductExists(int id)        
+            => _appDbUnitOfWork.ProductRepository.Exists(e => e.Id == id);        
     }
 }

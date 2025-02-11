@@ -1,24 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Customers
 {
     public class DeleteModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public DeleteModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public DeleteModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
-
+  
         [BindProperty]
         public Customer Customer { get; set; } = default!;
 
@@ -29,7 +24,7 @@ namespace AzureSQLDatabaseDemo.Pages_Customers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _appDbUnitOfWork.CustomerRepository.FirstOrDefaultAsync(m => m.Id == id);
 
             if (customer is not null)
             {
@@ -48,12 +43,12 @@ namespace AzureSQLDatabaseDemo.Pages_Customers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _appDbUnitOfWork.CustomerRepository.FirstOrDefaultAsync(m => m.Id == id);
             if (customer != null)
             {
                 Customer = customer;
-                _context.Customers.Remove(Customer);
-                await _context.SaveChangesAsync();
+                _appDbUnitOfWork.CustomerRepository.Remove(Customer);
+                await _appDbUnitOfWork.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

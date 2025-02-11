@@ -1,16 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Customers
 {
     public class CreateModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public CreateModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public CreateModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         public IActionResult OnGet()
@@ -29,8 +30,8 @@ namespace AzureSQLDatabaseDemo.Pages_Customers
                 return Page();
             }
 
-            _context.Customers.Add(Customer);
-            await _context.SaveChangesAsync();
+            await _appDbUnitOfWork.CustomerRepository.AddAsync(Customer);
+            await _appDbUnitOfWork.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

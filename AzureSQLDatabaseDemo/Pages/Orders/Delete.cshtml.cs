@@ -1,22 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Orders
 {
     public class DeleteModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public DeleteModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public DeleteModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         [BindProperty]
@@ -29,7 +25,7 @@ namespace AzureSQLDatabaseDemo.Pages_Orders
                 return NotFound();
             }
 
-            var order = await _context.Orders.FirstOrDefaultAsync(m => m.Id == id);
+            var order = await _appDbUnitOfWork.OrderRepository.FirstOrDefaultAsync(m => m.Id == id);
 
             if (order is not null)
             {
@@ -48,12 +44,12 @@ namespace AzureSQLDatabaseDemo.Pages_Orders
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _appDbUnitOfWork.OrderRepository.FindAsync(id.Value);
             if (order != null)
             {
                 Order = order;
-                _context.Orders.Remove(Order);
-                await _context.SaveChangesAsync();
+                _appDbUnitOfWork.OrderRepository.Remove(Order);
+                await _appDbUnitOfWork.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

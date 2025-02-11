@@ -1,4 +1,5 @@
 using AzureSQLDatabaseDemo.DAL.Context;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,12 @@ builder.Services.AddRazorPages();
 
 var cnnString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(cnnString));
+builder.Services.AddScoped<IAppDbUnitOfWork, AppDbUnitOfWork>();
+
+//builder.Services.AddScoped<IGenericRepository<Customer>, CustomerRepository>();
+//builder.Services.AddScoped<IGenericRepository<Order>, OrderRepository>();
+//builder.Services.AddScoped<IGenericRepository<Product>, ProductRepository>();
+
 
 var app = builder.Build();
 

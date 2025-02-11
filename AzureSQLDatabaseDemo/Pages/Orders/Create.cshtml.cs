@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Orders
 {
     public class CreateModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public CreateModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public CreateModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         public IActionResult OnGet()
@@ -35,8 +30,8 @@ namespace AzureSQLDatabaseDemo.Pages_Orders
                 return Page();
             }
 
-            _context.Orders.Add(Order);
-            await _context.SaveChangesAsync();
+            await _appDbUnitOfWork.OrderRepository.AddAsync(Order);
+            await _appDbUnitOfWork.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

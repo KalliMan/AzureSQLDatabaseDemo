@@ -1,15 +1,13 @@
 ﻿using AzureSQLDatabaseDemo.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
 
 namespace AzureSQLDatabaseDemo.DAL.Context
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

@@ -1,23 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.Models;
+using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 
 namespace AzureSQLDatabaseDemo.Pages_Customers
 {
     public class EditModel : PageModel
     {
-        private readonly AzureSQLDatabaseDemo.DAL.Context.AppDbContext _context;
+        private readonly IAppDbUnitOfWork _appDbUnitOfWork;
 
-        public EditModel(AzureSQLDatabaseDemo.DAL.Context.AppDbContext context)
+        public EditModel(IAppDbUnitOfWork appDbUnitOfWork)
         {
-            _context = context;
+            _appDbUnitOfWork = appDbUnitOfWork;
         }
 
         [BindProperty]
@@ -30,7 +25,7 @@ namespace AzureSQLDatabaseDemo.Pages_Customers
                 return NotFound();
             }
 
-            var customer =  await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
+            var customer =  await _appDbUnitOfWork.CustomerRepository.FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -48,11 +43,11 @@ namespace AzureSQLDatabaseDemo.Pages_Customers
                 return Page();
             }
 
-            _context.Attach(Customer).State = EntityState.Modified;
+            _appDbUnitOfWork.CustomerRepository.Update(Customer);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _appDbUnitOfWork.CustomerRepository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,9 +64,7 @@ namespace AzureSQLDatabaseDemo.Pages_Customers
             return RedirectToPage("./Index");
         }
 
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.Id == id);
-        }
+        private bool CustomerExists(int id)        
+            => _appDbUnitOfWork.CustomerRepository.Exists(e => e.Id == id);        
     }
 }
