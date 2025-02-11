@@ -4,8 +4,6 @@ using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using AzureSQLDatabaseDemo.Tests.Helpers;
-using Microsoft.CodeAnalysis;
-using System.Threading;
 
 namespace AzureSQLDatabaseDemo.Tests.TestCustomers
 {
