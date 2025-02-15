@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-
+    name: On pool Request
     runs-on: windows-latest
 
     steps:
