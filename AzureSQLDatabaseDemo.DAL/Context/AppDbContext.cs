@@ -1,5 +1,7 @@
 ﻿using AzureSQLDatabaseDemo.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace AzureSQLDatabaseDemo.DAL.Context
 {
@@ -16,11 +18,15 @@ namespace AzureSQLDatabaseDemo.DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>()
-                .HasMany(c => c.orders);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
 
-            modelBuilder.Entity<Product>()
-                .HasMany(c => c.orders);
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+                optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
+//                .UseLazyLoadingProxies() // not recommended
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
         }
     }
 }
