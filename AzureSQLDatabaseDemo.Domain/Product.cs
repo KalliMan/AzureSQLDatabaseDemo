@@ -1,11 +1,10 @@
 ﻿namespace AzureSQLDatabaseDemo.DAL.Models
 {
-    public class Product
+    public class Product: BaseDomainModel
     {
-        public int Id { get; set; }
         public required string Name { get; set; }
         public double Price { get; set; }
 
-        public ICollection<Order> orders { get; set; } = new List<Order>();
+        public IList<Order> Orders { get; set; } = new List<Order>();
     }
 }
