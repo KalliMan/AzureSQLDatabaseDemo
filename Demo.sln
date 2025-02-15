@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Databases", "Databases", "{B594812C-DBDC-4ED5-A095-A4DBD1DB08CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSQLDatabaseDemo", "AzureSQLDatabaseDemo\AzureSQLDatabaseDemo.csproj", "{EDF29EE0-2EA6-4C79-BF90-0BB8C8ED89ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSQLDatabaseDemo.API", "AzureSQLDatabaseDemo\AzureSQLDatabaseDemo.API.csproj", "{EDF29EE0-2EA6-4C79-BF90-0BB8C8ED89ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSQLDatabaseDemo.DAL", "AzureSQLDatabaseDemo.DAL\AzureSQLDatabaseDemo.DAL.csproj", "{9458043F-105C-441C-BD8C-78C080C63CFA}"
 EndProject
