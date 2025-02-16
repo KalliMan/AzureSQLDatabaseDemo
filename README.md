@@ -4,7 +4,7 @@
 https://wapp-az-sql-demo-bkdzc0buave8bsan.westeurope-01.azurewebsites.net/
 
 A simple ASP.NET Web App Application with razor Pages. The main goal is to demonstrate:
-* Complete SDLC process. It includes:
+* Complete CI process. It includes:
   - Changes on local using local SQL Server.
   - Automated Unit Test.
   - Project&Branch on GitHub  (https://github.com/KalliMan/CloudDemo)..
