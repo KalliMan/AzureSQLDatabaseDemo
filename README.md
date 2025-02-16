@@ -12,21 +12,21 @@ A simple ASP.NET Web App Application with razor Pages. The main goal is to demon
   - A custom action on GitHub that deploy the build from the master branch to Azure web app.
 * Azure web-app.
 * Azure SQL Database
-* Entity Framework usage.
+* Entity Framework.
   - Add Migration:
     ```
-    dotnet ef migrations add Initial  --project AzureSQLDatabaseDemo.DAL --startup-project AzureSQLDatabaseDemo
+    dotnet ef migrations add Initial --project AzureSQLDatabaseDemo.DAL --startup-project AzureSQLDatabaseDemo
     ```
   - Update Database:
     ```
-    dotnet ef database update  --project AzureSQLDatabaseDemo.DAL --startup-project AzureSQLDatabaseDemo
+    dotnet ef database update --project AzureSQLDatabaseDemo.DAL --startup-project AzureSQLDatabaseDemo
     ```
   - Remove last migration
     ```
-    dotnet ef migrations remove  --project AzureSQLDatabaseDemo.DAL --startup-project AzureSQLDatabaseDemo
+    dotnet ef migrations remove --project AzureSQLDatabaseDemo.DAL --startup-project AzureSQLDatabaseDemo
     ```
 * Repository and Unit of Work Patterns.
-* Create Automated Unit Tests that to test REST API methods.
+* Automated Unit Tests that to test REST API methods.
 
 #### Note: The CRUD pages are generated using aspnet-codegenerator tool.
 
