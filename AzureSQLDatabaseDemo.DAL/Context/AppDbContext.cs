@@ -24,8 +24,8 @@ namespace AzureSQLDatabaseDemo.DAL.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
                 optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
-//                .UseLazyLoadingProxies() // not recommended
-                .EnableSensitiveDataLogging()
+//                .UseLazyLoadingProxies()          // not recommended
+//                .EnableSensitiveDataLogging()
                 .EnableDetailedErrors();
         }
     }
