@@ -1,4 +1,4 @@
-# It contains several projects for SDC demonstrations including Azure.
+# Contains several projects for demonstration purposes including Azure.
 
 ## AzureSQLDatabaseDemo
 https://wapp-az-sql-demo-bkdzc0buave8bsan.westeurope-01.azurewebsites.net/
@@ -8,8 +8,8 @@ A simple ASP.NET Web App Application with razor Pages. The main goal is to demon
   - Changes on local using local SQL Server.
   - Automated Unit Test.
   - Project&Branch on GitHub  (https://github.com/KalliMan/CloudDemo)..
-  - A custom action on GitHub that runs the unit tests as a rules check before submit.
-  - A custom action on GitHub that deployes the build from the master to Azure web app.
+  - A custom action on GitHub that runs the unit tests as rules check before submition.
+  - A custom action on GitHub that deploy the build from the master branch to Azure web app.
 * Azure web-app.
 * Azure SQL Database
 * Entity Framework usage.
