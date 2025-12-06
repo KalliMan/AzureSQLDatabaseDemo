@@ -1,7 +1,7 @@
 # Contains several projects for demonstration purposes including Azure.
 
 ## AzureSQLDatabaseDemo
-https://wapp-az-sql-demo-bkdzc0buave8bsan.westeurope-01.azurewebsites.net/
+[https://wapp-az-sql-demo-bkdzc0buave8bsan.westeurope-01.azurewebsites.net/](https://az-sql-db-demo-new-hrb5gth7babmbba0.spaincentral-01.azurewebsites.net/)
 
 A simple ASP.NET Web App Application with razor Pages. The main goal is to demonstrate:
 * Complete CI process. It includes:
