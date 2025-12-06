@@ -1,7 +1,6 @@
 using AzureSQLDatabaseDemo.DAL.Context;
 using AzureSQLDatabaseDemo.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +11,6 @@ var cnnString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(cnnString));
 builder.Services.AddScoped<IAppDbUnitOfWork, AppDbUnitOfWork>();
 
-//builder.Services.AddScoped<IGenericRepository<Customer>, CustomerRepository>();
-//builder.Services.AddScoped<IGenericRepository<Order>, OrderRepository>();
-//builder.Services.AddScoped<IGenericRepository<Product>, ProductRepository>();
-
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -24,7 +18,7 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        dbContext.Database.Migrate();
+        dbContext.Database.EnsureCreated();
     }
 }
 else
