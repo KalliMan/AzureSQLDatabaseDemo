@@ -41,6 +41,7 @@ jobs:
   
   deploy:
     runs-on: windows-latest
+    needs: build
     steps:
       - name: Deployment
         uses: actions/webapps-deploy@v2
@@ -79,5 +80,6 @@ jobs:
           # slot-name: 'Production'
           # package: .
           
+
 
 
