@@ -38,14 +38,16 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-
+  
+  deploy:
+    runs-on: windows-latest
+    steps:
       - name: Deployment
         uses: actions/webapps-deploy@v2
         with:
           app-name: "${{env.AZURE_WEBAPP_NAME}}"
           publish-profile: "{{secrets.AZ_SQL_DB_DEMO_PUBLIC_PROFILE}}"
-          package: "${{env.DOTNET_ROOT}}/myapp" #"${{env.AZURE_WEBAPP_PACKAGE_PATH}}"
-          
+          package: "${{env.DOTNET_ROOT}}/myapp" #"${{env.AZURE_WEBAPP_PACKAGE_PATH}}"  
   # deploy:
     # runs-on: windows-latest
     # needs: build
@@ -77,4 +79,5 @@ jobs:
           # slot-name: 'Production'
           # package: .
           
+
 
