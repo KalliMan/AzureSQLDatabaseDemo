@@ -9,6 +9,10 @@ on:
       - master
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_NAME: az-sql-db-demo
+  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+
 jobs:
   build:
     runs-on: windows-latest
@@ -34,35 +38,48 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-
+  
   deploy:
     runs-on: windows-latest
     needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      - name: Deployment
+        uses: actions/webapps-deploy@v2
         with:
-          name: .net-app
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FB34D4789068436A95B51B318CF35698 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A26605B4FF1643C3BA2B6B03A5C936FB }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_46D40C8DABA24ABB90F7F9B002FD4E79 }}
+          app-name: "${{env.AZURE_WEBAPP_NAME}}"
+          publish-profile: "{{secrets.AZ_SQL_DB_DEMO_PUBLIC_PROFILE}}"
+          package: "${{env.DOTNET_ROOT}}/myapp" #"${{env.AZURE_WEBAPP_PACKAGE_PATH}}"  
+  # deploy:
+    # runs-on: windows-latest
+    # needs: build
+    # environment:
+      # name: 'Production'
+      # url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    # permissions:
+      # id-token: write #This is required for requesting the JWT
+      # contents: read #This is required for actions/checkout
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'wapp-az-sql-demo'
-          slot-name: 'Production'
-          package: .
+    # steps:
+      # - name: Download artifact from build job
+        # uses: actions/download-artifact@v4
+        # with:
+          # name: .net-app
+      
+      # - name: Login to Azure
+        # uses: azure/login@v2
+        # with:
+          # client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FB34D4789068436A95B51B318CF35698 }}
+          # tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A26605B4FF1643C3BA2B6B03A5C936FB }}
+          # subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_46D40C8DABA24ABB90F7F9B002FD4E79 }}
+
+      # - name: Deploy to Azure Web App
+        # id: deploy-to-webapp
+        # uses: azure/webapps-deploy@v3
+        # with:
+          # app-name: 'wapp-az-sql-demo'
+          # slot-name: 'Production'
+          # package: .
           
+
+
+
