@@ -1,3 +1,5 @@
+name: Run Sonar Cloud Qube Analysis
+
 on:
   push:
     branches:
