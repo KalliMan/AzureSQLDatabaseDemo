@@ -1,27 +1,51 @@
-name: Run Sonar Cloud Qube Analysis
+name: SonarCloud Analysis
 
 on:
+  push:
+    branches:
+      - master
+
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
-- name: Install SonarScanner
-  run: dotnet tool install --global dotnet-sonarscanner
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: windows-latest
 
-- name: Sonar Begin
-  run: |
-    dotnet sonarscanner begin \
-      /k:"kalliman-the-key" \
-      /o:"kalliman" \
-      /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-      /d:sonar.host.url="https://sonarcloud.io"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-- name: Build
-  run: dotnet build
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
 
-- name: Test
-  run: dotnet test
+      - name: Install SonarCloud scanner
+        run: dotnet tool install --global dotnet-sonarscanner
 
-- name: Sonar End
-  run: |
-    dotnet sonarscanner end \
-      /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      - name: Begin SonarCloud analysis
+        run: |
+          dotnet sonarscanner begin `
+            /k:"kalliman-the-key" `
+            /o:"kalliman" `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+            /d:sonar.host.url="https://sonarcloud.io""
+
+      - name: Restore dependencies
+        run: dotnet restore AzureSQLDatabaseDemo.sln
+
+      - name: Build
+        run: dotnet build AzureSQLDatabaseDemo.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test AzureSQLDatabaseDemo.sln --configuration Release --no-build --verbosity normal
+
+      - name: End SonarCloud analysis
+        run: |
+          dotnet sonarscanner end `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
