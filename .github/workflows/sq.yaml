@@ -29,7 +29,7 @@ jobs:
         run: dotnet tool install --global dotnet-sonarscanner
 
       - name: Begin SonarCloud analysis
-        run: dotnet sonarscanner begin /k:"kalliman-the-key" /o:"KalliMan" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+        run: dotnet sonarscanner begin /k:"KalliMan" /o:"kalliman-the-key" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
 
       - name: Restore dependencies
         run: dotnet restore AzureSQLDatabaseDemo.sln
