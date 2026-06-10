@@ -1,0 +1,50 @@
+name: SonarCloud Analysis
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Install SonarCloud scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Begin SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner begin /k:"KalliMan" /o:"kalliman-the-key" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
+
+      - name: Restore dependencies
+        run: dotnet restore AzureSQLDatabaseDemo.sln
+
+      - name: Build
+        run: dotnet build AzureSQLDatabaseDemo.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test AzureSQLDatabaseDemo.sln --configuration Release --no-build --verbosity normal
+
+      - name: End SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner end `
+            /d:sonar.token="$env:SONAR_TOKEN"
